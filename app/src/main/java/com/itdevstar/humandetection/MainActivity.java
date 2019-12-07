@@ -37,7 +37,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity  implements CvCameraViewListener2 {
 
     private static final String    TAG                 = "MainActivity";
-    private static final Scalar FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
+    private static final Scalar     FACE_RECT_COLOR     = new Scalar(0, 255, 0, 255);
     public static final int        JAVA_DETECTOR       = 0;
     public static final int        NATIVE_DETECTOR     = 1;
 
@@ -190,12 +190,14 @@ public class MainActivity extends AppCompatActivity  implements CvCameraViewList
 
 /*
         Mat rotImage1 = Imgproc.getRotationMatrix2D(new Point(mRgba.cols() / 2,
-               mRgba.rows() / 2), 180, 1.0);
+                mRgba.rows() / 2), 180, 1.0);
 
         Imgproc.warpAffine(mRgba, mRgba, rotImage1, mRgba.size());
+        Core.flip(mRgba, mRgba, 0 );
+        return mRgba;
 */
 
-        Mat rotImage = Imgproc.getRotationMatrix2D(new Point(mGray.cols() / 2,
+                   Mat rotImage = Imgproc.getRotationMatrix2D(new Point(mGray.cols() / 2,
                 mGray.rows() / 2), 90, 1.0);
 
         Imgproc.warpAffine(mGray, mGray, rotImage, mGray.size());
@@ -216,19 +218,14 @@ public class MainActivity extends AppCompatActivity  implements CvCameraViewList
         }else {
             Log.e(TAG, "Detection method is not selected!");
         }
-
-        Rect[] facesArray = faces.toArray();
+          Rect[] facesArray = faces.toArray();
         for (int i = 0; i < facesArray.length; i++) {
             Imgproc.rectangle(mGray, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
-            //Imgproc.rectangle(mRgba, facesArray[i].tl(), facesArray[i].br(), FACE_RECT_COLOR, 3);
         }
 
         Imgproc.warpAffine(mGray, mGray, rotImage, mGray.size());
-
-        //Core.flip(mRgba, mRgba, 0 );
         Core.flip(mGray, mGray, 0 );
 
-        //return mRgba;
         return mGray;
     }
 
